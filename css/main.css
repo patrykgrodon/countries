@@ -46,17 +46,22 @@ body {
   font-family: "Roboto Condensed", sans-serif;
   -webkit-transition: 0.3s all;
   transition: 0.3s all;
+  cursor: pointer;
 }
 
 .btn:hover {
-  cursor: pointer;
   -webkit-transform: translateY(-3px);
           transform: translateY(-3px);
 }
 
+.btn:focus {
+  -webkit-transform: translateY(1px);
+          transform: translateY(1px);
+}
+
 .location__btn {
   position: fixed;
-  top: 0;
+  top: 5vh;
   left: 5vw;
 }
 
@@ -142,33 +147,53 @@ body {
   display: grid;
   -ms-grid-columns: 1fr 1fr;
       grid-template-columns: 1fr 1fr;
-  -ms-grid-rows: 15rem min-content max-content min-content;
-      grid-template-rows: 15rem -webkit-min-content -webkit-max-content -webkit-min-content;
-      grid-template-rows: 15rem min-content max-content min-content;
+  -ms-grid-rows: 15rem 10rem min-content min-content;
+      grid-template-rows: 15rem 10rem -webkit-min-content -webkit-min-content;
+      grid-template-rows: 15rem 10rem min-content min-content;
   overflow: hidden;
   justify-items: center;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .country__img {
-  width: 100%;
-  height: 100%;
   grid-column: 1 / -1;
-  width: 15rem;
+  width: 20rem;
   height: 15rem;
+  padding: 2rem 0;
 }
 
 .country__name {
   grid-column: 1 / -1;
   text-align: center;
+  height: 100%;
+  overflow: hidden;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .country__info-container {
   grid-column: 1 / -1;
   font-size: 2rem;
   margin-bottom: 2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .country__info {
@@ -242,9 +267,10 @@ body {
       -ms-flex-align: center;
           align-items: center;
   width: 90vw;
-  margin: 0 auto;
+  margin: 5vh auto;
   position: relative;
   background-color: var(--color-secondary);
+  min-height: 90vh;
 }
 
 .header,
@@ -273,5 +299,7 @@ body {
 .footer {
   font-size: 4rem;
   text-align: center;
+  -ms-flex-item-align: start;
+      align-self: flex-start;
 }
 /*# sourceMappingURL=main.css.map */
