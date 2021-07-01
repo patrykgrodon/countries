@@ -147,9 +147,9 @@ body {
   display: grid;
   -ms-grid-columns: 1fr 1fr;
       grid-template-columns: 1fr 1fr;
-  -ms-grid-rows: 15rem 10rem min-content min-content;
-      grid-template-rows: 15rem 10rem -webkit-min-content -webkit-min-content;
-      grid-template-rows: 15rem 10rem min-content min-content;
+  -ms-grid-rows: 15rem 13rem min-content min-content;
+      grid-template-rows: 15rem 13rem -webkit-min-content -webkit-min-content;
+      grid-template-rows: 15rem 13rem min-content min-content;
   overflow: hidden;
   justify-items: center;
   -webkit-box-pack: center;
@@ -170,7 +170,6 @@ body {
 .country__name {
   grid-column: 1 / -1;
   text-align: center;
-  height: 100%;
   overflow: hidden;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -238,6 +237,15 @@ body {
   background-color: transparent;
   -webkit-box-shadow: none;
           box-shadow: none;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 3rem;
+}
+
+.modal__btn:hover {
+  -webkit-transform: none;
+          transform: none;
 }
 
 .overlay {
