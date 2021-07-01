@@ -7,7 +7,7 @@
 
 .btn {
   border: none;
-  background-color: var(--color-primary);
+  background-image: var(--color-primary);
   padding: 1.5rem;
   border-radius: 1.5rem;
   margin: 1rem;
@@ -75,7 +75,7 @@
 .country {
   height: 55rem;
   width: 35rem;
-  background-color: var(--color-primary);
+  background-image: var(--color-primary);
   padding: 1.5rem;
   border-radius: 1.5rem;
 
@@ -144,6 +144,7 @@
   z-index: 10;
 
   &__btn {
+    background-image: none;
     background-color: transparent;
     box-shadow: none;
     position: absolute;
@@ -166,4 +167,31 @@
 }
 .hidden {
   display: none;
+}
+
+.neighbours {
+  background-image: linear-gradient(to right bottom, #7ed56f, #28b485);
+  width: 60vw;
+  height: 70vh;
+  padding: 5rem;
+  // overflow: scroll;
+  &__header {
+    font-size: 6rem;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  &-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(124px, 1fr));
+    grid-template-rows: repeat(auto-fit, 124px);
+    grid-gap: 4rem;
+    justify-items: center;
+  }
+}
+.neighbour {
+  &__img {
+    width: 124px;
+    height: 124px;
+  }
 }

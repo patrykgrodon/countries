@@ -1,11 +1,9 @@
 :root {
-
-  --color-primary: rgb(14, 182, 36);
+  // --color-primary: rgb(14, 182, 36);
+  --color-primary: linear-gradient(to right bottom, #7ed56f, #28b485);
   --color-secondary: #9c7af7;
   --color-tertiary: #fff;
-
 }
-
 
 *,
 *::before,
@@ -21,8 +19,8 @@ html {
 }
 
 body {
-  font-family: 'Roboto Condensed', sans-serif;
+  font-family: "Roboto Condensed", sans-serif;
   font-weight: 300;
   color: var(--color-tertiary);
-  background-color: grey;
+  background-color: #e0dede;
 }

@@ -19,11 +19,23 @@ const displayNeighboursBtn = document.querySelector("country__neighbours");
 /////////////////////////////////////////////
 // Functions
 
-const getCountryData = async function (country) {
+const getCountryData = async function (country, isNeighbour = false) {
   try {
-    const res = await fetch(`https://restcountries.eu/rest/v2/name/${country}`);
-    const [data] = await res.json();
-    return data;
+    const res = await fetch(
+      `https://restcountries.eu/rest/v2/${
+        isNeighbour ? "alpha" : "name"
+      }/${country}`
+    );
+
+    if (!isNeighbour) {
+      const [data] = await res.json();
+      return data;
+    }
+
+    if (isNeighbour) {
+      const data = await res.json();
+      return data;
+    }
   } catch (err) {
     console.log(err);
   }
@@ -40,6 +52,7 @@ const displayCountry = async function (countryData) {
   const countryEl = document.createElement("div");
   countryEl.classList.add("country");
   countryEl.setAttribute("data-alpha2code", `${countryData.alpha2Code}`);
+  countryEl.setAttribute("data-neighbours", `${countryData.borders}`);
   countryEl.innerHTML = `
               <img class="country__img" src="${countryImg}" alt="${countryName} flag" />
             <p class="country__name heading-2">${countryName}</p>
@@ -58,7 +71,7 @@ const displayCountry = async function (countryData) {
 
 displayMap = function (country) {
   const html = `
-    <div class="modal__map">
+    <div class="map">
         <iframe
           width="800"
           height="600"
@@ -71,6 +84,19 @@ displayMap = function (country) {
   closeModalBtn.insertAdjacentHTML("afterend", html);
 };
 
+displayNeighbour = async function (neighbour) {
+  const countryData = await getCountryData(neighbour, true);
+  const html = `
+    <div class='neighbour'>
+    <div class='neighbour__img-container'>
+    <img alt="${neighbour} flag" src="https://www.countryflags.io/${countryData.alpha2Code}/shiny/64.png" class="neighbour__img"/></div>
+    </div>
+    `;
+  document
+    .querySelector(".neighbours-container")
+    .insertAdjacentHTML("beforeend", html);
+};
+
 const openModal = function () {
   modal.classList.remove("hidden");
   overlay.classList.remove("hidden");
@@ -78,8 +104,9 @@ const openModal = function () {
 const closeModal = function () {
   modal.classList.add("hidden");
   overlay.classList.add("hidden");
-  if (modal.querySelector(".modal__map"))
-    modal.querySelector(".modal__map").remove();
+  if (modal.querySelector(".map")) modal.querySelector(".map").remove();
+  if (modal.querySelector(".neighbours"))
+    modal.querySelector(".neighbours").remove();
 };
 
 const succes = async function (pos) {
@@ -107,25 +134,39 @@ formBtn.addEventListener("click", async function (e) {
   formInput.value = "";
 });
 
-// Display map country you want
+// Display map/neighbours country you want
 countriesContainer.addEventListener("click", function (e) {
-  if (!e.target.classList.contains("country__map")) return;
+  if (
+    !e.target.classList.contains("country__map") &&
+    !e.target.classList.contains("country__neighbours")
+  )
+    return;
+  // Display map
   const countryName = e.target
     .closest(".country")
     .querySelector(".country__name").innerHTML;
-  openModal();
-  displayMap(countryName);
+  if (e.target.classList.contains("country__map")) {
+    openModal();
+    displayMap(countryName);
+  }
+
+  // Display neighbours
+  if (e.target.classList.contains("country__neighbours")) {
+    const neighbours = e.target
+      .closest(".country")
+      .dataset.neighbours.split(",");
+    const html = `
+    <div class="neighbours">
+          <h3 class="neighbours__header">${countryName} neighbours</h3>
+          <div class="neighbours-container"></div>
+        </div>
+    `;
+    closeModalBtn.insertAdjacentHTML("afterend", html);
+    openModal();
+    neighbours.forEach((neighbour) => displayNeighbour(neighbour));
+  }
 });
 // Close Modal
 closeModalBtn.addEventListener("click", function () {
   closeModal();
 });
-
-displayNeighbour = function (countryData) {
-  const html = `
-    <div class='neighbour'>
-    <div class='neighbour__img-container'>
-    <img alt="${countryData.name}" src="https://www.countryflags.io/${countryData.alpha2Code}/shiny/64.png" class="neighbour__img"/></div>
-    </div>
-    `;
-};
