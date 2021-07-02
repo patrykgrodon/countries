@@ -55,7 +55,7 @@ const displayCountry = async function (countryData) {
   countryEl.setAttribute("data-neighbours", `${countryData.borders}`);
   countryEl.innerHTML = `
               <img class="country__img" src="${countryImg}" alt="${countryName} flag" />
-            <p class="country__name heading-2">${countryName}</p>
+            <p class="country__name">${countryName}</p>
             <div class="country__info-container">
               <p class="country__info">Capital: ${countryCapital}</p>
               <p class="country__info">Language: ${countryLanguage}</p>

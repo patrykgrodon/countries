@@ -1,10 +1,16 @@
 :root {
   // --color-primary: rgb(14, 182, 36);
   --color-primary: linear-gradient(to right bottom, #7ed56f, #28b485);
-  --color-secondary: #9c7af7;
+  --color-secondary: linear-gradient(45deg, #3c3b7a, #91617e);
   --color-tertiary: #fff;
 }
 
+/// Breakpoints
+$bp-large: 68.75em; // 1100px
+$bp-medium: 50em; // 800px
+$bp-small: 37.5em; // 600px
+$bp-smallest: 25em; // 400px
+///////////
 *,
 *::before,
 *::after {
@@ -16,11 +22,19 @@
 html {
   font-size: 62.5%;
   box-sizing: border-box;
+
+  @media only screen and (max-width: $bp-large) {
+    font-size: 50%;
+  }
+
+  @media only screen and (max-width: $bp-medium) {
+    font-size: 37.5%;
+  }
 }
 
 body {
-  font-family: "Roboto Condensed", sans-serif;
-  font-weight: 300;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 400;
   color: var(--color-tertiary);
-  background-color: #e0dede;
+  background-image: var(--color-secondary);
 }

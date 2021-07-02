@@ -1,6 +1,6 @@
 :root {
   --color-primary: linear-gradient(to right bottom, #7ed56f, #28b485);
-  --color-secondary: #9c7af7;
+  --color-secondary: linear-gradient(45deg, #3c3b7a, #91617e);
   --color-tertiary: #fff;
 }
 
@@ -19,19 +19,41 @@ html {
           box-sizing: border-box;
 }
 
+@media only screen and (max-width: 68.75em) {
+  html {
+    font-size: 50%;
+  }
+}
+
+@media only screen and (max-width: 50em) {
+  html {
+    font-size: 37.5%;
+  }
+}
+
 body {
-  font-family: "Roboto Condensed", sans-serif;
-  font-weight: 300;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 400;
   color: var(--color-tertiary);
-  background-color: #e0dede;
+  background-image: var(--color-secondary);
 }
 
 .heading-1 {
-  font-size: 5rem;
+  font-size: 6rem;
 }
 
-.heading-2 {
-  font-size: 4rem;
+@media only screen and (max-width: 68.75em) {
+  .heading-1 {
+    font-size: 5rem;
+  }
+}
+
+@media only screen and (max-width: 37.5em) {
+  .heading-1 {
+    font-size: 3rem;
+    width: 70%;
+    margin: 0 auto;
+  }
 }
 
 .btn {
@@ -40,10 +62,11 @@ body {
   padding: 1.5rem;
   border-radius: 1.5rem;
   margin: 1rem;
-  -webkit-box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.3);
-          box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0 0 2rem 0.5rem rgba(0, 0, 0, 0.3);
+          box-shadow: 0 0 2rem 0.5rem rgba(0, 0, 0, 0.3);
   font-size: 1.6rem;
   font-family: "Roboto Condensed", sans-serif;
+  font-weight: 400;
   -webkit-transition: 0.3s all;
   transition: 0.3s all;
   cursor: pointer;
@@ -61,8 +84,16 @@ body {
 
 .location__btn {
   position: fixed;
-  top: 5vh;
+  top: 3vh;
   left: 5vw;
+}
+
+@media only screen and (max-width: 50em) {
+  .location__btn {
+    top: 2rem;
+    left: 2rem;
+    font-size: 1.5rem;
+  }
 }
 
 .form {
@@ -79,15 +110,30 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.05);
   padding: 4rem;
   margin: 3rem 0;
 }
 
+@media only screen and (max-width: 37.5em) {
+  .form {
+    padding: 2rem;
+    margin: 1.5rem 0;
+    width: 90%;
+  }
+}
+
 .form__label {
   font-size: 5rem;
-  font-weight: 400;
+  font-style: bold;
   margin-bottom: 3rem;
+}
+
+@media only screen and (max-width: 37.5em) {
+  .form__label {
+    font-size: 3rem;
+    text-align: center;
+  }
 }
 
 .form__input {
@@ -96,7 +142,16 @@ body {
   font-size: 1.8rem;
   font-weight: bold;
   border: none;
-  color: gray;
+  border-radius: 2rem;
+  color: black;
+  width: 60%;
+  height: 4rem;
+}
+
+@media only screen and (max-width: 37.5em) {
+  .form__input {
+    width: 80%;
+  }
 }
 
 .form__input:focus {
@@ -117,6 +172,22 @@ body {
 
 .form__input:focus::placeholder {
   opacity: 0;
+}
+
+.form::-webkit-input-placeholder {
+  color: rgba(0, 0, 0, 0.315);
+}
+
+.form:-ms-input-placeholder {
+  color: rgba(0, 0, 0, 0.315);
+}
+
+.form::-ms-input-placeholder {
+  color: rgba(0, 0, 0, 0.315);
+}
+
+.form::placeholder {
+  color: rgba(0, 0, 0, 0.315);
 }
 
 .form__btn {
@@ -147,9 +218,9 @@ body {
   display: grid;
   -ms-grid-columns: 1fr 1fr;
       grid-template-columns: 1fr 1fr;
-  -ms-grid-rows: 15rem 13rem min-content min-content;
-      grid-template-rows: 15rem 13rem -webkit-min-content -webkit-min-content;
-      grid-template-rows: 15rem 13rem min-content min-content;
+  -ms-grid-rows: 13rem 13rem min-content min-content;
+      grid-template-rows: 13rem 13rem -webkit-min-content -webkit-min-content;
+      grid-template-rows: 13rem 13rem min-content min-content;
   overflow: hidden;
   justify-items: center;
   -webkit-box-pack: center;
@@ -158,18 +229,29 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  -webkit-box-shadow: 0 0 2rem rgba(0, 0, 0, 0.473);
+          box-shadow: 0 0 2rem rgba(0, 0, 0, 0.473);
+  -webkit-transition: 0.3s all;
+  transition: 0.3s all;
+}
+
+.country:hover {
+  -webkit-transform: scale(1.05);
+          transform: scale(1.05);
 }
 
 .country__img {
   grid-column: 1 / -1;
-  width: 20rem;
-  height: 15rem;
+  width: 18rem;
+  height: 13rem;
   padding: 2rem 0;
 }
 
 .country__name {
   grid-column: 1 / -1;
   text-align: center;
+  font-size: 4rem;
+  font-weight: 300;
   overflow: hidden;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -198,7 +280,7 @@ body {
 .country__info {
   padding: 1rem 0;
   text-align: center;
-  border-bottom: 1px solid var(--color-tertiary);
+  border-bottom: 1px solid currentColor;
 }
 
 .country__map, .country__neighbours {
@@ -249,6 +331,13 @@ body {
           transform: none;
 }
 
+@media only screen and (max-width: 50em) {
+  .modal__btn {
+    top: 3rem;
+    right: 1rem;
+  }
+}
+
 .overlay {
   position: fixed;
   top: 0;
@@ -266,31 +355,92 @@ body {
 .neighbours {
   background-image: -webkit-gradient(linear, left top, right bottom, from(#7ed56f), to(#28b485));
   background-image: linear-gradient(to right bottom, #7ed56f, #28b485);
-  width: 60vw;
-  height: 70vh;
+  width: 80vw;
+  height: 90vh;
   padding: 5rem;
 }
 
+@media only screen and (max-width: 50em) {
+  .neighbours {
+    height: 100vh;
+    width: 100vw;
+  }
+}
+
 .neighbours__header {
-  font-size: 6rem;
+  font-size: 8rem;
   text-align: center;
   padding: 2rem;
+}
+
+@media only screen and (max-width: 37.5em) {
+  .neighbours__header {
+    font-size: 5rem;
+  }
+}
+
+@media only screen and (max-width: 25em) {
+  .neighbours__header {
+    font-size: 3rem;
+  }
 }
 
 .neighbours-container {
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: (minmax(124px, 1fr))[auto-fit];
-      grid-template-columns: repeat(auto-fit, minmax(124px, 1fr));
-  -ms-grid-rows: (124px)[auto-fit];
-      grid-template-rows: repeat(auto-fit, 124px);
+  -ms-grid-columns: (minmax(12rem, 1fr))[auto-fit];
+      grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  -ms-grid-rows: (12rem)[auto-fit];
+      grid-template-rows: repeat(auto-fit, 12rem);
   grid-gap: 4rem;
   justify-items: center;
 }
 
+@media only screen and (max-width: 50em) {
+  .neighbours-container {
+    width: 80%;
+    margin: 2rem auto;
+    -ms-grid-columns: (minmax(10rem, 1fr))[auto-fit];
+        grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    -ms-grid-rows: (10rem)[auto-fit];
+        grid-template-rows: repeat(auto-fit, 10rem);
+    grid-gap: 2rem;
+  }
+}
+
+@media only screen and (max-width: 25em) {
+  .neighbours-container {
+    -ms-grid-columns: (minmax(8rem, 1fr))[auto-fit];
+        grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    -ms-grid-rows: (8rem)[auto-fit];
+        grid-template-rows: repeat(auto-fit, 8rem);
+  }
+}
+
 .neighbour__img {
-  width: 124px;
-  height: 124px;
+  width: 12rem;
+  height: 12rem;
+}
+
+@media only screen and (max-width: 50em) {
+  .neighbour__img {
+    width: 10rem;
+    height: 10rem;
+  }
+}
+
+@media only screen and (max-width: 25em) {
+  .neighbour__img {
+    width: 8rem;
+    height: 8rem;
+  }
+}
+
+@media only screen and (max-width: 50em) {
+  .map iframe {
+    height: 90vh;
+    width: 100vw;
+  }
 }
 
 .container {
@@ -298,18 +448,27 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
   width: 90vw;
   margin: 5vh auto;
   position: relative;
-  background-color: var(--color-secondary);
+  background-image: var(--color-secondary);
   min-height: 90vh;
+}
+
+@media only screen and (max-width: 37.5em) {
+  .container {
+    padding: 1rem;
+    margin: 5vh 0;
+    width: 100vw;
+  }
 }
 
 .header,
@@ -320,6 +479,12 @@ body {
 
 .header {
   text-align: center;
+}
+
+@media only screen and (max-width: 37.5em) {
+  .header {
+    padding-top: 3rem;
+  }
 }
 
 .app {
@@ -337,8 +502,15 @@ body {
 
 .footer {
   font-size: 4rem;
+  font-weight: 200;
   text-align: center;
-  -ms-flex-item-align: start;
-      align-self: flex-start;
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+}
+
+@media only screen and (max-width: 50em) {
+  .footer {
+    font-size: 2rem;
+  }
 }
 /*# sourceMappingURL=main.css.map */

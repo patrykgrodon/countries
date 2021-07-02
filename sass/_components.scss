@@ -1,8 +1,13 @@
 .heading-1 {
-  font-size: 5rem;
-}
-.heading-2 {
-  font-size: 4rem;
+  font-size: 6rem;
+  @media only screen and (max-width: $bp-large) {
+    font-size: 5rem;
+  }
+  @media only screen and (max-width: $bp-small) {
+    font-size: 3rem;
+    width: 70%;
+    margin: 0 auto;
+  }
 }
 
 .btn {
@@ -11,9 +16,10 @@
   padding: 1.5rem;
   border-radius: 1.5rem;
   margin: 1rem;
-  box-shadow: 0 0 2px 1px rgba(black, 0.3);
+  box-shadow: 0 0 2rem 0.5rem rgba(black, 0.3);
   font-size: 1.6rem;
   font-family: "Roboto Condensed", sans-serif;
+  font-weight: 400;
   transition: 0.3s all;
   cursor: pointer;
 
@@ -26,8 +32,13 @@
 }
 .location__btn {
   position: fixed;
-  top: 5vh;
+  top: 3vh;
   left: 5vw;
+  @media only screen and (max-width: $bp-medium) {
+    top: 2rem;
+    left: 2rem;
+    font-size: 1.5rem;
+  }
 }
 
 .form {
@@ -35,14 +46,24 @@
   width: max-content;
   flex-direction: column;
   align-items: center;
-  background-color: rgba(black, 0.3);
+  background-color: rgba(black, 0.05);
   padding: 4rem;
   margin: 3rem 0;
 
+  @media only screen and (max-width: $bp-small) {
+    padding: 2rem;
+    margin: 1.5rem 0;
+    width: 90%;
+  }
   &__label {
     font-size: 5rem;
-    font-weight: 400;
+    font-style: bold;
     margin-bottom: 3rem;
+
+    @media only screen and (max-width: $bp-small) {
+      font-size: 3rem;
+      text-align: center;
+    }
   }
   &__input {
     padding: 0.5rem;
@@ -50,13 +71,23 @@
     font-size: 1.8rem;
     font-weight: bold;
     border: none;
-    color: gray;
+    border-radius: 2rem;
+    color: black;
+    width: 60%;
+    height: 4rem;
+
+    @media only screen and (max-width: $bp-small) {
+      width: 80%;
+    }
   }
   &__input:focus {
     outline: none;
   }
   &__input:focus::placeholder {
     opacity: 0;
+  }
+  &::placeholder {
+    color: rgba(0, 0, 0, 0.315);
   }
 
   &__btn {
@@ -81,23 +112,29 @@
 
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 15rem 13rem min-content min-content;
+  grid-template-rows: 13rem 13rem min-content min-content;
   overflow: hidden;
   justify-items: center;
   justify-content: center;
   align-items: center;
 
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.473);
+  transition: 0.3s all;
+  &:hover {
+    transform: scale(1.05);
+  }
   &__img {
     grid-column: 1 / -1;
-    width: 20rem;
-    height: 15rem;
+    width: 18rem;
+    height: 13rem;
     padding: 2rem 0;
   }
 
   &__name {
     grid-column: 1 / -1;
     text-align: center;
-    // height: 100%;
+    font-size: 4rem;
+    font-weight: 300;
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -114,7 +151,7 @@
   &__info {
     padding: 1rem 0;
     text-align: center;
-    border-bottom: 1px solid var(--color-tertiary);
+    border-bottom: 1px solid currentColor;
   }
 
   &__map,
@@ -151,8 +188,14 @@
     top: 1rem;
     right: 1rem;
     font-size: 3rem;
+
     &:hover {
       transform: none;
+    }
+
+    @media only screen and (max-width: $bp-medium) {
+      top: 3rem;
+      right: 1rem;
     }
   }
 }
@@ -171,27 +214,69 @@
 
 .neighbours {
   background-image: linear-gradient(to right bottom, #7ed56f, #28b485);
-  width: 60vw;
-  height: 70vh;
+  width: 80vw;
+  height: 90vh;
   padding: 5rem;
-  // overflow: scroll;
+
+  @media only screen and (max-width: $bp-medium) {
+    height: 100vh;
+    width: 100vw;
+  }
+
   &__header {
-    font-size: 6rem;
+    font-size: 8rem;
     text-align: center;
     padding: 2rem;
+
+    @media only screen and (max-width: $bp-small) {
+      font-size: 5rem;
+    }
+
+    @media only screen and (max-width: $bp-smallest) {
+      font-size: 3rem;
+    }
   }
 
   &-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(124px, 1fr));
-    grid-template-rows: repeat(auto-fit, 124px);
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    grid-template-rows: repeat(auto-fit, 12rem);
     grid-gap: 4rem;
     justify-items: center;
+
+    @media only screen and (max-width: $bp-medium) {
+      width: 80%;
+      margin: 2rem auto;
+      grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+      grid-template-rows: repeat(auto-fit, 10rem);
+      grid-gap: 2rem;
+    }
+    @media only screen and (max-width: $bp-smallest) {
+      grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+      grid-template-rows: repeat(auto-fit, 8rem);
+    }
   }
 }
 .neighbour {
   &__img {
-    width: 124px;
-    height: 124px;
+    width: 12rem;
+    height: 12rem;
+    @media only screen and (max-width: $bp-medium) {
+      width: 10rem;
+      height: 10rem;
+    }
+    @media only screen and (max-width: $bp-smallest) {
+      width: 8rem;
+      height: 8rem;
+    }
+  }
+}
+
+.map {
+  iframe {
+    @media only screen and (max-width: $bp-medium) {
+      height: 90vh;
+      width: 100vw;
+    }
   }
 }
