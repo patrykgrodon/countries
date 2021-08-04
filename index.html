@@ -25,9 +25,15 @@
           On this page you'll get information about country you want
         </h1>
       </header>
+
       <button class="btn location__btn">
         Get information about country you're in!
       </button>
+      <div class="location__valid-msg">
+        <p>Couldn't get your position.</p>
+        <p>Try again!</p>
+      </div>
+
       <main class="app">
         <form class="form">
           <label class="form__label">Type country to see information</label>
@@ -36,26 +42,10 @@
             class="form__input"
             placeholder='For example: "USA"'
           />
+          <div class="form__error-msg">Country not found. Try again!</div>
           <button class="btn form__btn">Display country</button>
         </form>
-        <div class="countries-container">
-          <!-- <div class="country" data-alpha2code="PL">
-            <img
-              class="country__img"
-              src="img/poland.png"
-              alt="Country image"
-            />
-            <p class="country__name heading-2">Poland</p>
-            <div class="country__info-container">
-              <p class="country__info">Capital: Warsaw</p>
-              <p class="country__info">Language: Polish</p>
-              <p class="country__info">Population: 38 437 239</p>
-              <p class="country__info">Currency: Polish złoty</p>
-            </div>
-            <p class="country__map">Show on map</p>
-            <p class="country__neighbours">Neighbours</p>
-          </div> -->
-        </div>
+        <div class="countries-container"></div>
       </main>
       <div class="modal hidden">
         <button class="btn modal__btn">&#10008;</button>

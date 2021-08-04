@@ -11,7 +11,7 @@ const overlay = document.querySelector(".overlay");
 const formInput = document.querySelector(".form__input");
 const formBtn = document.querySelector(".form__btn");
 
-//Countries
+// Countries
 const countriesContainer = document.querySelector(".countries-container");
 const displayMapBtn = document.querySelector("country__map");
 const displayNeighboursBtn = document.querySelector("country__neighbours");
@@ -26,7 +26,7 @@ const getCountryData = async function (country, isNeighbour = false) {
         isNeighbour ? "alpha" : "name"
       }/${country}`
     );
-
+    if (!res.ok) throw new Error(`Country not found (${res.status})`);
     if (!isNeighbour) {
       const [data] = await res.json();
       return data;
@@ -37,11 +37,11 @@ const getCountryData = async function (country, isNeighbour = false) {
       return data;
     }
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 };
 
-const displayCountry = async function (countryData) {
+const displayCountry = function (countryData) {
   const countryImg = countryData.flag;
   const countryName = countryData.name;
   const countryCapital = countryData.capital;
@@ -85,18 +85,46 @@ displayMap = function (country) {
 };
 
 displayNeighbour = async function (neighbour) {
-  const countryData = await getCountryData(neighbour, true);
-  const html = `
+  try {
+    const countryData = await getCountryData(neighbour, true);
+    const html = `
     <div class='neighbour'>
     <div class='neighbour__img-container'>
     <img alt="${neighbour} flag" src="https://www.countryflags.io/${countryData.alpha2Code}/shiny/64.png" class="neighbour__img"/></div>
     </div>
     `;
-  document
-    .querySelector(".neighbours-container")
-    .insertAdjacentHTML("beforeend", html);
+    document
+      .querySelector(".neighbours-container")
+      .insertAdjacentHTML("beforeend", html);
+  } catch (err) {
+    showNoNeighboursMsg();
+  }
+};
+const showNoResults = function () {
+  const msg = document.querySelector(".form__error-msg");
+  msg.style.transform = "scaleY(1)";
+  setTimeout(() => {
+    msg.style.transform = "scaleY(0)";
+  }, 4000);
 };
 
+const showNoNeighboursMsg = function () {
+  document.querySelector(".neighbours-container").innerHTML = `
+  <h3 class='neighbours__valid-msg'>This country does not have neighbours.</h3>
+  `;
+};
+const showNoLocationMsg = function () {
+  const msgEl = document.querySelector(".location__valid-msg");
+  if (msgEl.classList.contains("msg--active")) return;
+  msgEl.style.transform = "translateY(50%) scaleY(1)";
+  msgEl.classList.add("msg--active");
+  setTimeout(hideNoLocationMsg, 4000);
+};
+const hideNoLocationMsg = function () {
+  const msgEl = document.querySelector(".location__valid-msg");
+  msgEl.style.transform = "translateY(50%) scaleY(0)";
+  msgEl.classList.remove("msg--active");
+};
 const openModal = function () {
   modal.classList.remove("hidden");
   overlay.classList.remove("hidden");
@@ -110,13 +138,18 @@ const closeModal = function () {
 };
 
 const succes = async function (pos) {
-  const coords = pos.coords;
-  const res = await fetch(
-    `https://geocode.xyz/${coords.latitude},${coords.longitude}?geoit=json`
-  );
-  const { country } = await res.json();
-  const countryData = await getCountryData(country);
-  displayCountry(countryData);
+  try {
+    const coords = pos.coords;
+    const res = await fetch(
+      `https://geocode.xyz/${coords.latitude},${coords.longitude}?geoit=json`
+    );
+    if (!res.ok) throw new Error(`Couldn't get user position (${res.status})`);
+    const { country } = await res.json();
+    const countryData = await getCountryData(country);
+    displayCountry(countryData);
+  } catch (err) {
+    showNoLocationMsg();
+  }
 };
 
 /////////////////////////////////////////////////////
@@ -128,10 +161,15 @@ locationBtn.addEventListener("click", function () {
 });
 // Display country you're looking for
 formBtn.addEventListener("click", async function (e) {
-  e.preventDefault();
-  const countryData = await getCountryData(formInput.value);
-  displayCountry(countryData);
-  formInput.value = "";
+  try {
+    e.preventDefault();
+    const countryData = await getCountryData(formInput.value);
+    displayCountry(countryData);
+    formInput.value = "";
+  } catch (err) {
+    console.log(err.message);
+    showNoResults();
+  }
 });
 
 // Display map/neighbours country you want
@@ -163,6 +201,10 @@ countriesContainer.addEventListener("click", function (e) {
     `;
     closeModalBtn.insertAdjacentHTML("afterend", html);
     openModal();
+    if (neighbours[0] === "") {
+      showNoNeighboursMsg();
+      return;
+    }
     neighbours.forEach((neighbour) => displayNeighbour(neighbour));
   }
 });
