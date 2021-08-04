@@ -129,6 +129,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, 35rem);
   justify-content: center;
+  align-items: center;
   grid-gap: 5rem;
   padding: 5rem 0;
 }
@@ -314,5 +315,35 @@
       height: 90vh;
       width: 100vw;
     }
+  }
+}
+
+.spinner {
+  margin: 0 auto;
+  text-align: center;
+
+  &--map {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+  }
+
+  svg {
+    height: 6rem;
+    width: 6rem;
+    fill: black;
+    animation: rotate 2s infinite linear;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
   }
 }

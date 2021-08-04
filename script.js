@@ -70,9 +70,14 @@ const displayCountry = function (countryData) {
 };
 
 displayMap = function (country) {
-  const html = `
-    <div class="map">
-        <iframe
+  const spinner = renderSpinner();
+  spinner.classList.add("spinner--map");
+
+  closeModalBtn.insertAdjacentElement("afterend", spinner);
+  const map = document.createElement("div");
+  map.classList.add("map");
+  map.innerHTML = `
+  <iframe
           width="800"
           height="600"
           style="border: 0"
@@ -80,12 +85,18 @@ displayMap = function (country) {
           allowfullscreen
           src="https://www.google.com/maps/embed/v1/place?q=${country}&key=AIzaSyBMqV1gALEitm4NmDfa3ZTvlHe-CgjQlk0"
         ></iframe>
-      </div>`;
-  closeModalBtn.insertAdjacentHTML("afterend", html);
+  `;
+  closeModalBtn.insertAdjacentElement("afterend", map);
+  setTimeout(() => {
+    spinner.remove();
+  }, 5000);
 };
 
 displayNeighbour = async function (neighbour) {
+  const spinner = renderSpinner();
   try {
+    const neighboursEl = document.querySelector(".neighbours-container");
+    neighboursEl.insertAdjacentElement("beforeend", spinner);
     const countryData = await getCountryData(neighbour, true);
     const html = `
     <div class='neighbour'>
@@ -93,12 +104,11 @@ displayNeighbour = async function (neighbour) {
     <img alt="${neighbour} flag" src="https://www.countryflags.io/${countryData.alpha2Code}/shiny/64.png" class="neighbour__img"/></div>
     </div>
     `;
-    document
-      .querySelector(".neighbours-container")
-      .insertAdjacentHTML("beforeend", html);
+    neighboursEl.insertAdjacentHTML("beforeend", html);
   } catch (err) {
     showNoNeighboursMsg();
   }
+  spinner.remove();
 };
 const showNoResults = function () {
   const msg = document.querySelector(".form__error-msg");
@@ -138,7 +148,9 @@ const closeModal = function () {
 };
 
 const succes = async function (pos) {
+  const spinner = renderSpinner();
   try {
+    countriesContainer.insertAdjacentElement("afterbegin", spinner);
     const coords = pos.coords;
     const res = await fetch(
       `https://geocode.xyz/${coords.latitude},${coords.longitude}?geoit=json`
@@ -150,8 +162,18 @@ const succes = async function (pos) {
   } catch (err) {
     showNoLocationMsg();
   }
+  spinner.remove();
 };
 
+const renderSpinner = function () {
+  const spinner = document.createElement("div");
+  spinner.classList.add("spinner");
+  spinner.innerHTML = `
+  <svg>
+    <use href="../img/icons.svg#icon-loader"></use>
+  </svg>`;
+  return spinner;
+};
 /////////////////////////////////////////////////////
 // Event listeners
 
@@ -161,7 +183,9 @@ locationBtn.addEventListener("click", function () {
 });
 // Display country you're looking for
 formBtn.addEventListener("click", async function (e) {
+  const spinner = renderSpinner();
   try {
+    countriesContainer.insertAdjacentElement("afterbegin", spinner);
     e.preventDefault();
     const countryData = await getCountryData(formInput.value);
     displayCountry(countryData);
@@ -170,6 +194,7 @@ formBtn.addEventListener("click", async function (e) {
     console.log(err.message);
     showNoResults();
   }
+  spinner.remove();
 });
 
 // Display map/neighbours country you want
