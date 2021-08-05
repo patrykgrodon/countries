@@ -1,8 +1,13 @@
 ///////////////////////////////////////////////////
 // Variables
-
+let countries = [];
+const geolocation = {
+  isLoaded: false,
+  countryName: "",
+};
 // Location
 const locationBtn = document.querySelector(".location__btn");
+const locationValidMsg = document.querySelector(".location__valid-msg");
 // Modal
 const modal = document.querySelector(".modal");
 const closeModalBtn = document.querySelector(".modal__btn");
@@ -10,6 +15,7 @@ const overlay = document.querySelector(".overlay");
 // Form
 const formInput = document.querySelector(".form__input");
 const formBtn = document.querySelector(".form__btn");
+const formPlaceholder = document.querySelector(".form__error-msg");
 
 // Countries
 const countriesContainer = document.querySelector(".countries-container");
@@ -41,7 +47,7 @@ const getCountryData = async function (country, isNeighbour = false) {
   }
 };
 
-const displayCountry = function (countryData) {
+const displayCountry = function (countryData, isLocation = false) {
   const countryImg = countryData.flag;
   const countryName = countryData.name;
   const countryCapital = countryData.capital;
@@ -67,6 +73,8 @@ const displayCountry = function (countryData) {
   `;
   countriesContainer.insertAdjacentElement("afterbegin", countryEl);
   countryEl.scrollIntoView({ behavior: "smooth" });
+  countries.push({ el: countryEl, name: countryName });
+  if (isLocation) geolocation.countryName = countryName;
 };
 
 displayMap = function (country) {
@@ -110,7 +118,7 @@ displayNeighbour = async function (neighbour) {
   }
   spinner.remove();
 };
-const showNoResults = function () {
+const showErrorMsg = function () {
   const msg = document.querySelector(".form__error-msg");
   msg.style.transform = "scaleY(1)";
   setTimeout(() => {
@@ -123,22 +131,26 @@ const showNoNeighboursMsg = function () {
   <h3 class='neighbours__valid-msg'>This country does not have neighbours.</h3>
   `;
 };
-const showNoLocationMsg = function () {
+
+const showLocationErrorMsg = function () {
   const msgEl = document.querySelector(".location__valid-msg");
   if (msgEl.classList.contains("msg--active")) return;
   msgEl.style.transform = "translateY(50%) scaleY(1)";
   msgEl.classList.add("msg--active");
   setTimeout(hideNoLocationMsg, 4000);
 };
+
 const hideNoLocationMsg = function () {
   const msgEl = document.querySelector(".location__valid-msg");
   msgEl.style.transform = "translateY(50%) scaleY(0)";
   msgEl.classList.remove("msg--active");
 };
+
 const openModal = function () {
   modal.classList.remove("hidden");
   overlay.classList.remove("hidden");
 };
+
 const closeModal = function () {
   modal.classList.add("hidden");
   overlay.classList.add("hidden");
@@ -148,19 +160,41 @@ const closeModal = function () {
 };
 
 const succes = async function (pos) {
+  // Checking if information about geolocation is saved, if it's scroll to country you're in.
+  if (geolocation.countryName) {
+    const existingCountryEl = getExistingCountry(geolocation.countryName);
+    existingCountryEl.scrollIntoView({ behavior: "smooth" });
+    return;
+  }
+
   const spinner = renderSpinner();
   try {
     countriesContainer.insertAdjacentElement("afterbegin", spinner);
+
     const coords = pos.coords;
+    // Getting name of country you're in.
     const res = await fetch(
       `https://geocode.xyz/${coords.latitude},${coords.longitude}?geoit=json`
     );
     if (!res.ok) throw new Error(`Couldn't get user position (${res.status})`);
     const { country } = await res.json();
+    // Getting data about country you're in.
     const countryData = await getCountryData(country);
-    displayCountry(countryData);
+    geolocation.countryName = countryData.name;
+
+    // Checking if country we received is already displayed, if it's scroll to. If not, display.
+    const existingCountryEl = getExistingCountry(countryData.name);
+    console.log();
+    if (existingCountryEl.length !== 0) {
+      existingCountryEl.scrollIntoView({
+        behavior: "smooth",
+      });
+    } else {
+      displayCountry(countryData, true);
+    }
+    geolocation.isLoaded = true;
   } catch (err) {
-    showNoLocationMsg();
+    showLocationErrorMsg();
   }
   spinner.remove();
 };
@@ -173,6 +207,13 @@ const renderSpinner = function () {
     <use href="../img/icons.svg#icon-loader"></use>
   </svg>`;
   return spinner;
+};
+
+const getExistingCountry = function (countryName) {
+  const existingCountryArr = countries.filter(
+    (country) => country.name === countryName
+  );
+  return existingCountryArr.length > 0 ? existingCountryArr[0].el : [];
 };
 /////////////////////////////////////////////////////
 // Event listeners
@@ -188,11 +229,18 @@ formBtn.addEventListener("click", async function (e) {
     countriesContainer.insertAdjacentElement("afterbegin", spinner);
     e.preventDefault();
     const countryData = await getCountryData(formInput.value);
-    displayCountry(countryData);
+
+    // Check if country you're looking for is already displayed.
+    // If it's scroll to. If not, display.
+    if (countries.length === 0) {
+      displayCountry(countryData);
+    } else {
+      const existingCountryEl = getExistingCountry(countryData.name);
+      existingCountryEl.scrollIntoView({ behavior: "smooth" });
+    }
     formInput.value = "";
   } catch (err) {
-    console.log(err.message);
-    showNoResults();
+    showErrorMsg();
   }
   spinner.remove();
 });
