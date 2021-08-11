@@ -185,7 +185,7 @@ const succes = async function (pos) {
     // Checking if country we received is already displayed, if it's scroll to. If not, display.
     const existingCountryEl = getExistingCountry(countryData.name);
     console.log();
-    if (existingCountryEl.length !== 0) {
+    if (existingCountryEl) {
       existingCountryEl.scrollIntoView({
         behavior: "smooth",
       });
@@ -210,10 +210,11 @@ const renderSpinner = function () {
 };
 
 const getExistingCountry = function (countryName) {
-  const existingCountryArr = countries.filter(
+  const existingCountry = countries.find(
     (country) => country.name === countryName
   );
-  return existingCountryArr.length > 0 ? existingCountryArr[0].el : [];
+  console.log(existingCountry);
+  return existingCountry ? existingCountry.el : "";
 };
 /////////////////////////////////////////////////////
 // Event listeners
